@@ -1,9 +1,9 @@
 # Medplum Logo
 
-| Name                   | Red | Green | Blue |   Hex   | Pantone |
-| ---------------------- | --- | ----- | ---- | ------- | ------- |
-| Primary Purple         |  90 |   40  |  120 |  5a2878 |  3555 C |
-| Light Purple           | 126 |   79  |  155 |  7e4f9b |  2082 C |
-| Light Plum Leaf Green  | 112 |  214  |   91 |  70d65b |  7488 C |
-| Dark Plum Leaf Green   |  88 |  183  |   65 |  58B741 |   360 C |
-| Plum Stem Brown        | 173 |  113  |   54 |  ad7136 |  7572 C |
+| Name                  | Red | Green | Blue | Hex    | Pantone |
+| --------------------- | --- | ----- | ---- | ------ | ------- |
+| Dark Purple           | 120 | 87    | 197  | 7857C5 | 2665 C  |
+| Primary Purple        | 148 | 106   | 249  | 946AF9 | 2655 C  |
+| Light Plum Leaf Green | 64  | 188   | 38   | 40BC26 | 361 C   |
+| Dark Plum Leaf Green  | 51  | 150   | 30   | 33961E | 363 C   |
+| Plum Stem Brown       | 173 | 113   | 54   | ad7136 | 7572 C  |
