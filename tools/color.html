@@ -1,0 +1,130 @@
+<html>
+  <head>
+    <title>Color</title>
+  </head>
+  <body>
+    <h1>Color</h1>
+    <div id="output"></div>
+    <script>
+      // ["grape", "", "", "", "", "", "", ""],
+      // ["Name", "R", "G", "B", "L", "H", "S", "V"],
+      const grape = [
+        ["grape 0", 248, 240, 252, 0.97, 280, 0.05, 0.99],
+        ["grape 1", 243, 217, 250, 0.93, 287, 0.13, 0.98],
+        ["grape 2", 238, 190, 250, 0.89, 288, 0.24, 0.98],
+        ["grape 3", 229, 153, 247, 0.82, 289, 0.38, 0.97],
+        ["grape 4", 218, 119, 242, 0.76, 288, 0.51, 0.95],
+        ["grape 5", 204, 93, 232, 0.69, 288, 0.6, 0.91],
+        ["grape 6", 190, 75, 219, 0.63, 288, 0.66, 0.86],
+        ["grape 7", 174, 62, 201, 0.57, 288, 0.69, 0.79],
+        ["grape 8", 156, 54, 181, 0.51, 288, 0.7, 0.71],
+        ["grape 9", 134, 46, 156, 0.44, 288, 0.71, 0.61],
+      ];
+
+      // ["violet", "", "", "", "", "", "", ""],
+      // ["Name", "R", "G", "B", "L", "H", "S", "V"],
+      const violet = [
+        ["violet 0", 243, 240, 255, 0.96, 252, 0.06, 1.0],
+        ["violet 1", 229, 219, 255, 0.92, 257, 0.14, 1.0],
+        ["violet 2", 208, 191, 255, 0.85, 256, 0.25, 1.0],
+        ["violet 3", 177, 151, 252, 0.76, 255, 0.4, 0.99],
+        ["violet 4", 151, 117, 250, 0.68, 255, 0.53, 0.98],
+        ["violet 5", 132, 94, 247, 0.62, 255, 0.62, 0.97],
+        ["violet 6", 121, 80, 242, 0.58, 255, 0.67, 0.95],
+        ["violet 7", 112, 72, 232, 0.54, 255, 0.69, 0.91],
+        ["violet 8", 103, 65, 217, 0.5, 255, 0.7, 0.85],
+        ["violet 9", 95, 61, 196, 0.46, 255, 0.69, 0.77],
+      ];
+
+      /**
+       * Converts HSV color values to RGB.
+       * @param {number} h Hue (0-360)
+       * @param {number} s Saturation (0-1)
+       * @param {number} v Value (0-1)
+       * @return {string} RGB color in hexadecimal format (e.g., "#FF0000")
+       * @customfunction
+       */
+      function HSVtoRGB(h, s, v) {
+        let r, g, b;
+        const i = Math.floor(h / 60);
+        const f = h / 60 - i;
+        const p = v * (1 - s);
+        const q = v * (1 - f * s);
+        const t = v * (1 - (1 - f) * s);
+
+        switch (i % 6) {
+          case 0:
+            r = v;
+            g = t;
+            b = p;
+            break;
+          case 1:
+            r = q;
+            g = v;
+            b = p;
+            break;
+          case 2:
+            r = p;
+            g = v;
+            b = t;
+            break;
+          case 3:
+            r = p;
+            g = q;
+            b = v;
+            break;
+          case 4:
+            r = t;
+            g = p;
+            b = v;
+            break;
+          case 5:
+            r = v;
+            g = p;
+            b = q;
+            break;
+        }
+
+        // const toHex = (c) => {
+        //   const hex = Math.round(c * 255).toString(16);
+        //   return hex.length === 1 ? "0" + hex : hex;
+        // };
+
+        // return "#" + toHex(r) + toHex(g) + toHex(b);
+        return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+      }
+
+      const html = [];
+
+      for (let i = 0; i <= 9; i++) {
+        // const grapeIndex = i;
+        // const violetIndex = i + 10;
+        // const plumH =
+        const h = Math.round((grape[i][5] + violet[i][5]) / 2);
+        const s = (grape[i][6] + violet[i][6]) / 2;
+        const v = (grape[i][7] + violet[i][7]) / 2;
+        const rgb = HSVtoRGB(h, s, v);
+        console.log(`Plum ${i}: R=${rgb[0]}, G=${rgb[1]}, B=${rgb[2]}`);
+
+        const hex = `#${rgb
+          .map((c) => {
+            const hex = Math.round(c).toString(16);
+            return hex.length === 1 ? "0" + hex : hex;
+          })
+          .join("")}`;
+
+        html.push(
+          `<div style="display: inline-block; width: 130px; height: 100px; background-color: ${hex}; color: ${
+            i >= 5 ? "#fff" : "#000"
+          }; margin: 5px; text-align: left; padding: 10px; font-family: monospace; font-size: 10px; line-height: 1.5;">Medplum ${i}<br>Hex: ${hex}<br>RGB: ${
+            rgb[0]
+          }, ${rgb[1]}, ${rgb[2]}<br>HSV: ${h}, ${s.toFixed(2)}, ${v.toFixed(
+            2
+          )}</div>`
+        );
+      }
+
+      document.getElementById("output").innerHTML = html.join("");
+    </script>
+  </body>
+</html>
