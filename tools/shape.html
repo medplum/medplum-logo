@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Medplum Logo</title>
+  </head>
+  <body>
+    <label for="circle">Circle</label><br />
+    <input
+      type="range"
+      id="circle"
+      name="circle"
+      min="0.0001"
+      max="1"
+      step="any"
+      value="0.0001"
+    /><br />
+    <label for="heart">Heart</label><br />
+    <input
+      type="range"
+      id="heart"
+      name="heart"
+      min="0.0001"
+      max="1"
+      step="any"
+      value="0.0001"
+    /><br />
+    <label for="plum">Plum</label><br />
+    <input
+      type="range"
+      id="plum"
+      name="plum"
+      min="0.0001"
+      max="1"
+      step="any"
+      value="1"
+    /><br />
+    <button id="circle100">Circle 100%</button>
+    <button id="heart100">Heart 100%</button>
+    <button id="plum100">Plum 100%</button>
+    <button id="even">Even</button>
+    <button id="random">Random</button><br />
+    <canvas
+      width="1000"
+      height="1000"
+      style="width: 500px; height: 500px"
+    ></canvas>
+  </body>
+  <script>
+    const { abs, cos, sin } = Math;
+    const circleInput = document.getElementById("circle");
+    const heartInput = document.getElementById("heart");
+    const plumInput = document.getElementById("plum");
+    const canvas = document.querySelector("canvas");
+    const ctx = canvas.getContext("2d");
+
+    const circlePoints = [];
+    const heartPoints = [];
+    const plumPoints = [];
+
+    for (let i = 0; i < 360; i++) {
+      const theta = (i * Math.PI) / 180;
+      {
+        const x = sin(theta);
+        const y = cos(theta);
+        circlePoints.push([x, y]);
+      }
+      {
+        const x = sin(theta) ** 3;
+        const y =
+          (13 / 16) * cos(theta) -
+          (5 / 16) * cos(2 * theta) -
+          (2 / 16) * cos(3 * theta) -
+          (1 / 16) * cos(4 * theta);
+        heartPoints.push([x, y]);
+      }
+      {
+        const x = 0.9 * sin(theta);
+        const y = (1.0 - 0.1 * (1 - abs(sin(theta))) ** 4) * cos(theta);
+        plumPoints.push([x, y]);
+      }
+    }
+
+    function render() {
+      // Clear the canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Get circle value
+      let circle = parseFloat(circleInput.value);
+
+      // Get heart value
+      let heart = parseFloat(heartInput.value);
+
+      // Get plum value
+      let plum = parseFloat(plumInput.value);
+
+      const sum = circle + heart + plum;
+      if (sum === 0) {
+        return;
+      }
+
+      // Normalize
+      circle /= sum;
+      heart /= sum;
+      plum /= sum;
+
+      // Draw the weighted shape
+      ctx.beginPath();
+      const center = 500;
+      const radius = 200;
+      for (let i = 0; i < 360; i++) {
+        const x =
+          circle * circlePoints[i][0] +
+          heart * heartPoints[i][0] +
+          plum * plumPoints[i][0];
+        const y =
+          circle * circlePoints[i][1] +
+          heart * heartPoints[i][1] +
+          plum * plumPoints[i][1];
+        if (i === 0) {
+          ctx.moveTo(center + radius * x, center - radius * y);
+        } else {
+          ctx.lineTo(center + radius * x, center - radius * y);
+        }
+      }
+      ctx.closePath();
+      ctx.fillStyle = "#922275";
+      ctx.fill();
+    }
+
+    circleInput.addEventListener("input", render);
+    heartInput.addEventListener("input", render);
+    plumInput.addEventListener("input", render);
+
+    document.getElementById("circle100").addEventListener("click", () => {
+      circleInput.value = "1";
+      heartInput.value = "0";
+      plumInput.value = "0";
+      render();
+    });
+
+    document.getElementById("heart100").addEventListener("click", () => {
+      circleInput.value = "0";
+      heartInput.value = "1";
+      plumInput.value = "0";
+      render();
+    });
+
+    document.getElementById("plum100").addEventListener("click", () => {
+      circleInput.value = "0";
+      heartInput.value = "0";
+      plumInput.value = "1";
+      render();
+    });
+
+    document.getElementById("even").addEventListener("click", () => {
+      circleInput.value = "0.33";
+      heartInput.value = "0.33";
+      plumInput.value = "0.33";
+      render();
+    });
+
+    document.getElementById("random").addEventListener("click", () => {
+      circleInput.value = Math.random().toString();
+      heartInput.value = Math.random().toString();
+      plumInput.value = Math.random().toString();
+      render();
+    });
+
+    render();
+  </script>
+</html>
